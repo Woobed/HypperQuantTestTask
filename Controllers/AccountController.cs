@@ -12,7 +12,7 @@ namespace HyperQuantTestTask.Controllers
         private AccountService _accountService;
 
         private BitfinexRestClient _bifinexRestClient = new BitfinexRestClient(new HttpClient());
-        private BitfinexWSClient _bifinexWSClient = new BitfinexWSClient(new ClientWebSocket());
+        private BitfinexWSClient _bifinexWSClient = new BitfinexWSClient();
 
         
         public AccountController(AccountService accountService)
@@ -77,9 +77,9 @@ namespace HyperQuantTestTask.Controllers
             _bifinexWSClient.SubscribeCandles("BTCUSD", 60, DateTimeOffset.UtcNow.AddDays(-1), DateTimeOffset.UtcNow, 5);
 
            
-            await Task.Delay(TimeSpan.FromSeconds(30));
+            await Task.Delay(TimeSpan.FromSeconds(30), CancellationToken.None);
 
-            // Отписка и отключение
+            
             _bifinexWSClient.UnsubscribeTrades("BTCUSD");
             _bifinexWSClient.UnsubscribeCandles("BTCUSD");
             await _bifinexWSClient.DisconnectAsync();

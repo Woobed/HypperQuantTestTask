@@ -2,16 +2,14 @@
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
-using System.Collections.Generic;
 using HyperQuantTestTask.Interfaces;
 using HyperQuantTestTask.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HyperQuantTestTask.Connector
 {
     public class BitfinexWSClient : IWSConnector
     {
-        private readonly ClientWebSocket _webSocket;
+        private ClientWebSocket _webSocket = new ClientWebSocket();
         private readonly CancellationTokenSource _cts = new();
         private readonly Uri _uri = new("wss://api-pub.bitfinex.com/ws/2");
         private readonly Dictionary<int, string> _subscriptions = new();
@@ -20,19 +18,25 @@ namespace HyperQuantTestTask.Connector
         public event Action<Trade> NewSellTrade;
         public event Action<Candle> CandleSeriesProcessing;
 
-        public BitfinexWSClient(ClientWebSocket webSocket)
-        {
-            _webSocket = webSocket;
-        }
         public async Task ConnectAsync()
         {
-            await _webSocket.ConnectAsync(_uri, _cts.Token);
+
+            if (_webSocket != null)
+            {
+                await DisconnectAsync();
+            }
+
+            _webSocket = new ClientWebSocket();
+            await _webSocket.ConnectAsync(_uri, CancellationToken.None);
             _ = Task.Run(ReceiveMessagesAsync);
         }
         public async Task DisconnectAsync()
         {
-            _cts.Cancel();
-            await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
+            if (_webSocket != null && (_webSocket.State == WebSocketState.Open || _webSocket.State == WebSocketState.CloseReceived))
+            {
+                await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
+            }
+            _webSocket?.Dispose();
         }
 
         public async void SubscribeTrades(string pair, int maxCount = 100)
