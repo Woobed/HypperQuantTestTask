@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HyperQuantTestTask")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+acc8b9a63b550532b955472d2b296411399b5575")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4e7026ff84555b528d284cafef8b03b199c71fcd")]
 [assembly: System.Reflection.AssemblyProductAttribute("HyperQuantTestTask")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HyperQuantTestTask")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

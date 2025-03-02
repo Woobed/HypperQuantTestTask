@@ -12,7 +12,7 @@ namespace HyperQuantTestTask.Connector
     public class BitfinexWSClient : IWSConnector
     {
         private readonly ClientWebSocket _webSocket;
-        private readonly CancellationTokenSource _cts;
+        private readonly CancellationTokenSource _cts = new();
         private readonly Uri _uri = new("wss://api-pub.bitfinex.com/ws/2");
         private readonly Dictionary<int, string> _subscriptions = new();
 
@@ -20,10 +20,9 @@ namespace HyperQuantTestTask.Connector
         public event Action<Trade> NewSellTrade;
         public event Action<Candle> CandleSeriesProcessing;
 
-        public BitfinexWSClient(ClientWebSocket webSocket, CancellationTokenSource cts)
+        public BitfinexWSClient(ClientWebSocket webSocket)
         {
             _webSocket = webSocket;
-            _cts = cts;
         }
         public async Task ConnectAsync()
         {

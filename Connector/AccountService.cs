@@ -45,10 +45,7 @@ namespace HyperQuantTestTask.Connector
                 item => item[0].ToString().Substring(1, item[0].ToString().Length - 4),
                 item => (decimal)item[7].GetDouble()
             );
-            foreach (var rate in rates)
-            {
-                Console.WriteLine($"Currency: {rate.Key}, Rate: {rate.Value}");
-            }
+            
             return rates;
         }
 
