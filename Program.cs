@@ -1,3 +1,5 @@
+using HyperQuantTestTask.Connector;
+
 namespace HyperQuantTestTask
 {
     public class Program
@@ -7,7 +9,9 @@ namespace HyperQuantTestTask
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddRazorPages();
+            
+            builder.Services.AddHttpClient<AccountService>();
+            builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
 
@@ -19,14 +23,21 @@ namespace HyperQuantTestTask
                 app.UseHsts();
             }
 
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Account}/{action=Index}"
+                );
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            
 
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.MapRazorPages();
+            
 
             app.Run();
         }

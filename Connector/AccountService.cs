@@ -15,7 +15,7 @@ namespace HyperQuantTestTask.Connector
             {"BTC", 1},
             {"XRP", 15000},
             {"XMR", 50},
-            {"DASH", 30}
+            {"DSH", 30} //Bitfinex используют тикер DSH а не DASH
         };
 
         public AccountService(HttpClient httpClient)
@@ -38,13 +38,18 @@ namespace HyperQuantTestTask.Connector
 
         private async Task<Dictionary<string, decimal>> GetExchangeRatesAsync()
         {
-            var response = await _httpClient.GetStringAsync("https://api.bitfinex.com/v2/tickers?symbols=tBTCUSD,tXRPUSD,tXMRUSD,tDASHUSD");
-            var data = JsonSerializer.Deserialize<List<List<object>>>(response);
+            var response = await _httpClient.GetStringAsync("https://api.bitfinex.com/v2/tickers?symbols=tBTCUSD,tXRPUSD,tXMRUSD,tDSHUSD");
+            var data = JsonSerializer.Deserialize<List<List<JsonElement>>>(response);
 
-            return data.ToDictionary(
-                item => item[0].ToString().Substring(1, 3),
-                item => Convert.ToDecimal(item[7])
+            var rates = data.ToDictionary(
+                item => item[0].ToString().Substring(1, item[0].ToString().Length - 4),
+                item => (decimal)item[7].GetDouble()
             );
+            foreach (var rate in rates)
+            {
+                Console.WriteLine($"Currency: {rate.Key}, Rate: {rate.Value}");
+            }
+            return rates;
         }
 
         private decimal GetRate(Dictionary<string, decimal> rates, string from, string to)

@@ -1,0 +1,21 @@
+﻿@model Dictionary<string, decimal>
+
+<h2>Баланс</h2>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Валюта</th>
+            <th>Баланс</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Key</td>
+                <td>@item.Value.ToString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
