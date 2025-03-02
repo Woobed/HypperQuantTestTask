@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Net.WebSockets;
-using BitfinexConnector;
+﻿using BitfinexConnector;
 using HyperQuantTestTask.Connector;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +8,10 @@ namespace HyperQuantTestTask.Controllers
     {
 
         private AccountService _accountService;
-
+        /*
         private BitfinexRestClient _bifinexRestClient = new BitfinexRestClient(new HttpClient());
         private BitfinexWSClient _bifinexWSClient = new BitfinexWSClient();
-
+        */
         
         public AccountController(AccountService accountService)
         {
@@ -23,7 +21,7 @@ namespace HyperQuantTestTask.Controllers
         public async Task<ActionResult> Index()
         {
             var balanceDataGrid = await _accountService.GetPortfolioBalanceAsync();
-
+            /*
             // проверка BitfinexRestClient
 
             var trades = await _bifinexRestClient.GetNewTradesAsync("BTCUSD", 2);
@@ -84,7 +82,7 @@ namespace HyperQuantTestTask.Controllers
             _bifinexWSClient.UnsubscribeCandles("BTCUSD");
             await _bifinexWSClient.DisconnectAsync();
             //
-
+            */
             return View(balanceDataGrid);
         }
 
